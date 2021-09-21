@@ -10,8 +10,8 @@
     <link rel="stylesheet" type="text/css" href="assets/css/fontawesome-all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/iofrm-style.css">
     <link rel="stylesheet" type="text/css" href="assets/css/iofrm-theme22.css">
-    <link rel="stylesheet" type="text/css"
-        href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.2/css/dataTables.bootstrap4.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
 </head>
 
 <body>
@@ -45,7 +45,7 @@
                     <div class="col-12">
                         <button type="button" class="btn btn-primary fa-pull-right mb-2" data-toggle="modal"
                             data-target="#addData">Add Data</button>
-                        <table class="table table-bordered">
+                        <table id="tableData" class="table table-bordered">
                             <thead>
                                 <tr>
                                     <th scope="col">#</th>
@@ -195,12 +195,18 @@
     <script src="assets/js/bootstrap.min.js"></script>
     <script src="assets/js/main.js"></script>
     <script src="assets/js/jquery.qrcode.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.2/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.11.2/js/dataTables.bootstrap4.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
     <script>
         $(document).on('click', '[data-toggle="lightbox"]', function (event) {
             event.preventDefault();
             $(this).ekkoLightbox();
         });
+
+        $(document).ready(function() {
+            $('#tableData').DataTable();
+        } );
 
         $(document).on("click", "#btnShowQR", function () {
             let qrData = $(this).data("qr");
