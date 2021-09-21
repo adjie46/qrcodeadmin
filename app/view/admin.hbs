@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>iofrm</title>
+    <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/fontawesome-all.min.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/iofrm-style.css">
+    <link rel="stylesheet" type="text/css" href="assets/css/iofrm-theme22.css">
+    <link rel="stylesheet" type="text/css"
+        href="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.css">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">QR ADMIN</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+            aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav mr-auto">
+
+            </ul>
+            <span class="navbar-text">
+                <form action="/logout" method="POST">
+                    <input type="submit" value="Logout">
+                </form>
+            </span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <center>
+            <h1>Data QR Code</h1>
+        </center>
+        <div class="table-responsive">
+            <div class="container">
+                <div class="row">
+                    <div class="col-12">
+                        <button type="button" class="btn btn-primary fa-pull-right mb-2" data-toggle="modal"
+                            data-target="#addData">Add Data</button>
+                        <table class="table table-bordered">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Nama Lengkap</th>
+                                    <th scope="col">Asal BPC</th>
+                                    <th scope="col">Photo</th>
+                                    <th scope="col">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {{#each data}}
+                                <tr>
+                                    <th scope="row">{{inc @key}}</th>
+                                    <td>{{data_name}}</td>
+                                    <td>{{data_bpc}}</td>
+                                    <td>
+                                        <a href="assets/images/data_img/{{data_photo}}" data-toggle="lightbox">
+                                            <img src="assets/images/data_img/{{data_photo}}" width="60"
+                                                class="img-thumbnail">
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <button id="btnShowQR" type="button" class="btn btn-primary"
+                                            data-qr='{{data_qr}}' data-toggle="modal" data-target="#showQRModal"><i
+                                                class="fas fa-eye"></i></button>
+                                        <button type="button" class="btn btn-success"><i
+                                                class="fas fa-edit"></i></button>
+                                        <button type="button" class="btn btn-danger"><i
+                                                class="far fa-trash-alt"></i></button>
+                                        <button type="button" class="btn btn-warning"><i
+                                                class="fas fa-download"></i></button>
+                                    </td>
+                                </tr>
+                                {{else}}
+                                    <tr>
+                                        <td colspan="6"><center>NO DATA</center></td>
+                                    </tr>
+                                {{/each}}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-sm fade" style="margin: 0 auto" id="showQRModal" tabindex="-1" role="dialog"
+        aria-labelledby="showQRModal" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Show QR Code</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div style="align-items: center;" id="output"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal modal-md fade" style="margin: 0 auto" id="addData" tabindex="-1" role="dialog"
+        aria-labelledby="addData" data-backdrop="static" data-keyboard="false" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Add New Data</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form accept-charset="UTF-8" encType="multipart/form-data" action="/addNewData" method="POST">
+                        <div class="mb-3">
+                            <label for="txt_fullname" class="form-label">Nama Lengkap</label>
+                            <input type="text" class="form-control" name="txt_fullname" id="txt_fullname" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="txt_asal_bpc" class="form-label">Asal BPC</label>
+                            <input type="text" class="form-control" name="txt_asal_bpc" id="txt_asal_bpc" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="formFile" class="form-label">Photo</label>
+                            <input class="form-control" name="file" type="file" id="photo" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="assets/js/jquery.min.js"></script>
+    <script src="assets/js/popper.min.js"></script>
+    <script src="assets/js/bootstrap.min.js"></script>
+    <script src="assets/js/main.js"></script>
+    <script src="assets/js/jquery.qrcode.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/5.3.0/ekko-lightbox.min.js"></script>
+    <script>
+        $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+            event.preventDefault();
+            $(this).ekkoLightbox();
+        });
+
+        $(document).on("click", "#btnShowQR", function () {
+            let qrData = $(this).data("qr");
+            $('#output').empty();
+            $("#output").qrcode(qrData);
+        })
+    </script>
+</body>
+
+</html>

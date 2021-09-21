@@ -1,0 +1,59 @@
+{
+  "name": "qrcodeadmin",
+  "version": "1.0.0",
+  "description": "QR Code Admin Panel",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/adjie46/qrcodeadmin.git"
+  },
+  "keywords": [
+    "QR",
+    "Code",
+    "Admin",
+    "Panel"
+  ],
+  "author": "Adjie Kurniawan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/adjie46/qrcodeadmin/issues"
+  },
+  "homepage": "https://github.com/adjie46/qrcodeadmin#readme",
+  "dependencies": {
+    "await-to-js": "^3.0.0",
+    "bcrypt": "^5.0.0",
+    "bcrypt-promise": "^2.0.0",
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.19.0",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "^1.4.5",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
+    "dotenv": "^8.6.0",
+    "express": "^4.16.3",
+    "express-fileupload": "^1.2.1",
+    "express-handlebars": "^5.3.3",
+    "express-session": "^1.17.2",
+    "handlebars": "^4.7.7",
+    "hbs": "^4.1.2",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "multer": "^1.4.3",
+    "mysql2": "^2.3.0",
+    "node-base64-image": "^2.0.3",
+    "node-fetch": "^2.6.1",
+    "nodemailer": "^6.6.3",
+    "parse-error": "^0.2.0",
+    "passport": "^0.4.1",
+    "passport-jwt": "^4.0.0",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "nodemon": "^2.0.12"
+  }
+}
