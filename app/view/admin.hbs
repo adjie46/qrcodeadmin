@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>iofrm</title>
+    <title>QR Code Admin Panel</title>
     <link rel="stylesheet" type="text/css" href="assets/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/fontawesome-all.min.css">
     <link rel="stylesheet" type="text/css" href="assets/css/iofrm-style.css">
@@ -15,7 +15,7 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
         <a class="navbar-brand" href="#">QR ADMIN</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
             aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
@@ -33,7 +33,8 @@
         </div>
     </nav>
 
-    <div class="container">
+    <main role="main" class="container"><br><br><br><br>
+         <div class="container">
         <center>
             <h1>Data QR Code</h1>
         </center>
@@ -70,12 +71,13 @@
                                             data-qr='{{data_qr}}' data-toggle="modal" data-target="#showQRModal"><i
                                                 class="fas fa-eye"></i></button>
                                         <button id="btnEdit" type="button" class="btn btn-success"
-                                            data-full-name='{{data_name}}' data-bpc='{{data_bpc}}'
+                                            data-full-name='{{data_name}}' data-bpc='{{data_bpc}}' data-id='{{data_id}}'
                                             data-current-photo='{{data_photo}}' data-toggle="modal"
                                             data-target="#edtData"><i class="fas fa-edit"></i></button>
-                                        <button type="button" class="btn btn-danger"><i
-                                                class="far fa-trash-alt"></i></button>
-                                        <button type="button" class="btn btn-warning"><i
+                                        <button id="btnDelete" type="button" class="btn btn-danger"
+                                            data-id='{{data_id}}'><i class="far fa-trash-alt"></i></button>
+                                        <button id="btnDownloadQR" type="button" class="btn btn-warning"
+                                            data-qr='{{data_qr}}' data-name='{{data_name}}'><i
                                                 class="fas fa-download"></i></button>
                                     </td>
                                 </tr>
@@ -94,6 +96,9 @@
         </div>
     </div>
 
+    </main>
+
+   
     <div class="modal modal-sm fade" style="margin: 0 auto" id="showQRModal" tabindex="-1" role="dialog"
         aria-labelledby="showQRModal" data-backdrop="static" data-keyboard="false" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -133,7 +138,8 @@
                         </div>
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Photo</label>
-                            <input class="form-control" name="file" type="file" id="photo" required>
+                            <input class="form-control" name="file" type="file" id="photo"
+                                accept="image/png, image/gif, image/jpeg" required>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </form>
@@ -153,7 +159,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form accept-charset="UTF-8" encType="multipart/form-data" action="/addNewData" method="POST">
+                    <form accept-charset="UTF-8" id="frmEdit" encType="multipart/form-data" action="#" method="POST">
                         <div class="mb-3">
                             <label for="txt_fullname" class="form-label">Nama Lengkap</label>
                             <input type="text" class="form-control" name="edt_txt_fullname" id="edt_txt_fullname"
@@ -163,10 +169,12 @@
                             <label for="txt_asal_bpc" class="form-label">Asal BPC</label>
                             <input type="text" class="form-control" name="edt_txt_asal_bpc" id="edt_txt_asal_bpc"
                                 required>
+                            <input type="hidden" class="form-control" name="edt_current_photo" id="edt_current_photo">
                         </div>
                         <div class="mb-3">
                             <label for="formFile" class="form-label">Photo</label>
-                            <input class="form-control" name="file" type="file" id="photo" required>
+                            <input class="form-control" name="file" type="file"
+                                accept="image/png, image/gif, image/jpeg" id="photo">
                             <a id="current_img" href="#" data-toggle="lightbox">
                                 <img id="current_images" src="#" width="60" class="img-thumbnail">
                             </a>
@@ -177,6 +185,9 @@
             </div>
         </div>
     </div>
+
+    
+    
 
     <script src="assets/js/jquery.min.js"></script>
     <script src="assets/js/popper.min.js"></script>
@@ -196,15 +207,44 @@
             $("#output").qrcode(qrData);
         })
 
+        $(document).on("click", "#btnDownloadQR", function () {
+            let qrData = $(this).data("qr");
+            let name = $(this).data("name");
+            $('#output').empty();
+            $("#output").qrcode(qrData);
+
+            var canvas = $('#output canvas');
+            var img = canvas.get(0).toDataURL("image/png").replace("image/png", "image/octet-stream");
+            
+            var link = document.createElement('a');
+            link.download = `qrCode_${name}.jpg`;
+            link.href = img;
+            link.click();
+
+        })
+
+        $(document).on("click", "#btnDelete", function () {
+            let id = $(this).data("id");
+            if (confirm('Are you sure you want to delete this data from database?')) {
+                window.location.href = `/deleteData/${id}`
+            } else {
+                
+            }
+
+        })
+
         $(document).on("click", "#btnEdit", function () {
             let fullname = $(this).data("full-name");
             let bpc = $(this).data("bpc");
             let currentPhoto = $(this).data("current-photo");
+            let id = $(this).data("id");
 
             $("#edt_txt_fullname").val(fullname)
             $("#edt_txt_asal_bpc").val(bpc)
+            $("#edt_current_photo").val(currentPhoto)
             $("#current_img").attr("href", `assets/images/data_img/${currentPhoto}`)
-            $("#current_images").attr("src",`assets/images/data_img/${currentPhoto}`);
+            $("#current_images").attr("src", `assets/images/data_img/${currentPhoto}`);
+            $("#frmEdit").attr("action", `/editData/${id}`);
 
         })
     </script>

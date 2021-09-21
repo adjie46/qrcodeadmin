@@ -5,6 +5,7 @@ const saltRounds = 10;
 const multer = require('multer')
 const path = require('path')
 const {decrypt,encrypt } = require('../helper/encryption')
+const fs = require('fs')
 
 
 const waitFor = (ms) => new Promise(r => setTimeout(r, ms));
@@ -30,6 +31,13 @@ async function getData() {
   })
 }
 
+async function getDataById(id) {
+  return new Promise(async (resolve, reject) => {
+    const [rows, fields] = await conn.query(`SELECT * FROM qr_data WHERE data_id='${id}' LIMIT 1`);
+    resolve(rows)
+  })
+}
+
 async function insertNewData(data) {
   return new Promise(async (resolve, reject) => {
     const [rows, fields] = await conn.query(`INSERT INTO qr_data (data_name,data_bpc,data_photo)
@@ -41,6 +49,32 @@ async function insertNewData(data) {
 async function updateQRCode(qrdata,dataId) {
   return new Promise(async (resolve, reject) => {
     const [rows, fields] = await conn.query(`UPDATE qr_data set data_qr='${qrdata}' WHERE data_id='${dataId}'`);
+    resolve(rows)
+  })
+}
+
+async function deleteData(id) {
+  return new Promise(async (resolve, reject) => {
+    const [rows, fields] = await conn.query(`DELETE FROM qr_data WHERE data_id='${id}'`);
+    resolve(rows)
+  })
+}
+
+
+async function updateData(data,id) {
+  return new Promise(async (resolve, reject) => {
+    const [rows, fields] = await conn.query(`UPDATE qr_data set
+    data_name='${data.txt_fullname}', data_bpc='${data.txt_asal_bpc}'
+    WHERE data_id='${id}'`);
+    resolve(rows)
+  })
+}
+
+async function updateDataWithPhoto(data,id) {
+  return new Promise(async (resolve, reject) => {
+    const [rows, fields] = await conn.query(`UPDATE qr_data set
+    data_name='${data.txt_fullname}', data_bpc='${data.txt_asal_bpc}',data_photo='${data.file_name}'
+    WHERE data_id='${id}'`);
     resolve(rows)
   })
 }
@@ -128,4 +162,61 @@ exports.addNewData = async (req, res) => {
         }
 
     })  
+}
+
+exports.editData = async (req, res) => {
+  upload(req, res, async (err) => {
+      if (err) throw err
+      
+      const data = req.body
+      const dataFile = req.file
+      const id = req.params.id
+    
+    
+      if (typeof req.file !== 'undefined' && req.file.filename != "") {
+        
+        var dir = `./public/images/data_img/${data.edt_current_photo}`;
+                
+        fs.unlinkSync(dir)
+
+        const datas = {
+          txt_fullname : data.edt_txt_fullname,
+          txt_asal_bpc : data.edt_txt_asal_bpc,
+          file_name : dataFile.filename
+        }
+
+        let update = await updateDataWithPhoto(datas,id)
+        if (update.affectedRows){
+          res.redirect('/admin')
+        }
+
+      } else {
+        const datas = {
+          txt_fullname : data.edt_txt_fullname,
+          txt_asal_bpc : data.edt_txt_asal_bpc,
+        }
+
+        let update = await updateData(datas,id)
+        if (update.affectedRows){
+          res.redirect('/admin')
+        }
+      }
+    
+  })
+}
+
+exports.deleteData = async (req, res) => {
+  let id = req.params.id
+  
+  let getData = await getDataById(id)
+  
+  var dir = `./public/images/data_img/${getData[0].data_photo}`;
+                
+  fs.unlinkSync(dir)
+
+  let deleteDatas = await deleteData(id)
+  if (deleteDatas.affectedRows){
+    res.redirect('/admin')
+  }
+
 }

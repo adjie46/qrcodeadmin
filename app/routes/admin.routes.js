@@ -16,5 +16,15 @@ module.exports = app => {
         .route('/addNewData')
         .post(adminController.addNewData)
         .all(adminController.notAllowed)
+
+    app
+        .route('/editData/:id')
+        .post(adminController.editData)
+        .all(adminController.notAllowed)
+
+    app
+        .route('/deleteData/:id')
+        .get(adminController.deleteData)
+        .all(adminController.notAllowed)
         
 }
