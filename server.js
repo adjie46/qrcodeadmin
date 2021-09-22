@@ -83,6 +83,6 @@ io.on('connection', client => {
     console.log("CONNECT");
 });
 
-io.on("new message", (arg) => {
+io.on("send", (arg) => {
     console.log(arg); // world
 });
