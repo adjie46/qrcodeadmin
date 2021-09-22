@@ -80,6 +80,5 @@ if (startServer) {
 }
 
 io.on('connection', client => {
-    console.log(client);
     console.log("CONNECT");
 });
