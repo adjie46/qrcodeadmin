@@ -11,6 +11,7 @@ var flash = require('connect-flash');
 var session = require('express-session');
 var cookieParser = require('cookie-parser')
 
+
 //SET SERVER
 let app = express()
 
@@ -72,6 +73,12 @@ fs.readdir("./app/routes/", (err, files) => {
 let startServer = http.createServer(app)
     .listen(config.serverPort)
 
+const io = require('socket.io')(startServer);
+
 if (startServer) {
     console.log(`your server is running on port ${config.serverPort}`);
 }
+
+io.on('connection', client => {
+    console.log(client);
+});
