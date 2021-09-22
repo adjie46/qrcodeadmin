@@ -79,13 +79,6 @@ if (startServer) {
     console.log(`your server is running on port ${config.serverPort}`);
 }
 
-io.on('connection', client => {
-    console.log("CONNECT");
+require('./app/controller/socket.controller')
 
-    client.on("send", (arg) => {
-        console.log(arg);
-        client.broadcast.emit('received', arg);
-    });
-
-});
 
