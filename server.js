@@ -81,8 +81,10 @@ if (startServer) {
 
 io.on('connection', client => {
     console.log("CONNECT");
+
+    client.on("send", (arg) => {
+        console.log(arg); // world
+    });
+
 });
 
-io.on("send", (arg) => {
-    console.log(arg); // world
-});

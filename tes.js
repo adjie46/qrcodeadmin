@@ -6,4 +6,4 @@ var socket = io.connect('http://qrcode.muslimdigital.id', {reconnect: true});
 socket.on('connect', function (socket) {
     console.log('Connected!');
 });
-io.serverSideEmit("send", "world");
+socket.emit("send", "world");
