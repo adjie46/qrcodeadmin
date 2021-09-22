@@ -24,7 +24,7 @@ async function decrypt(text) {
 
  decrypted = Buffer.concat([decrypted, decipher.final()]);
 
- return decrypted;
+ return decrypted.toString();
 }
 
 module.exports = { decrypt, encrypt };

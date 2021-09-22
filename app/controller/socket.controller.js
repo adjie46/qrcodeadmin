@@ -18,7 +18,7 @@ async function asyncForEach(array, callback) {
 
 async function getDataById(id) {
     return new Promise(async (resolve, reject) => {
-      const [rows, fields] = await conn.query(`SELECT * FROM qr_data WHERE data_id='${id}' LIMIT 1`);
+      const [rows, fields] = await conn.query(`SELECT * FROM qr_data WHERE data_id=${id} LIMIT 1`);
       resolve(rows)
     })
   }

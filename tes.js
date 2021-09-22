@@ -1,6 +1,6 @@
 //client.js
 var io = require('socket.io-client');
-var socket = io.connect('http://qrcode.muslimdigital.id', {reconnect: true});
+var socket = io.connect('http://localhost:8080', {reconnect: true});
 
 // Add a connect listener
 socket.on('connect', function (socket) {
