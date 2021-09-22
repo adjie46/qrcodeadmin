@@ -22,9 +22,9 @@ module.exports = function(io, param2) {
     
         client.on("send", (arg) => {
     
-            let data = decrypt(arg)
-            console.log(data);
-            client.broadcast.emit('received', data);
+            let encryptedData = await decrypt(`${arg}`)
+            console.log(encryptedData);
+            client.broadcast.emit('received', encryptedData);
         });
     
     });
