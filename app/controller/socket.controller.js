@@ -20,7 +20,7 @@ module.exports = function(io, param2) {
     io.on('connection', client => {
         console.log("CONNECT");
     
-        client.on("send", (arg) => {
+        client.on("send", async (arg) => {
     
             let encryptedData = await decrypt(`${arg}`)
             console.log(encryptedData);
