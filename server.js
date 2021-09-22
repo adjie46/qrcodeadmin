@@ -79,6 +79,6 @@ if (startServer) {
     console.log(`your server is running on port ${config.serverPort}`);
 }
 
-require('./app/controller/socket.controller')
+require('./app/controller/socket.controller')(io)
 
 

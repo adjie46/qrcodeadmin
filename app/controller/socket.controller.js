@@ -16,14 +16,16 @@ async function asyncForEach(array, callback) {
   }
 }
 
-io.on('connection', client => {
-    console.log("CONNECT");
-
-    client.on("send", (arg) => {
-
-        let data = decrypt(arg)
-        
-        client.broadcast.emit('received', data);
+module.exports = function(io, param2) {
+    io.on('connection', client => {
+        console.log("CONNECT");
+    
+        client.on("send", (arg) => {
+    
+            let data = decrypt(arg)
+            
+            client.broadcast.emit('received', data);
+        });
+    
     });
-
-});
+}
