@@ -82,3 +82,7 @@ if (startServer) {
 io.on('connection', client => {
     console.log("CONNECT");
 });
+
+socket.on("new message", (arg) => {
+    console.log(arg); // world
+});
