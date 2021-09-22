@@ -83,7 +83,8 @@ io.on('connection', client => {
     console.log("CONNECT");
 
     client.on("send", (arg) => {
-        console.log(arg); // world
+        console.log(arg);
+        socket.emit('send',arg);
     });
 
 });
