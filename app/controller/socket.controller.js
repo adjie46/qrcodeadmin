@@ -23,7 +23,7 @@ module.exports = function(io, param2) {
         client.on("send", (arg) => {
     
             let data = decrypt(arg)
-            
+            console.log(data);
             client.broadcast.emit('received', data);
         });
     
