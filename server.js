@@ -84,7 +84,7 @@ io.on('connection', client => {
 
     client.on("send", (arg) => {
         console.log(arg);
-        client.emit('received',arg);
+        client.broadcast.emit('received', "this is a test");
     });
 
 });
